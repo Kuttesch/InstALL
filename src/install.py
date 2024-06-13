@@ -17,6 +17,7 @@ def getInstallParameters():
     name = config.get('General', 'Name')
     script_name = config.get('General', 'ScriptName')
     alias = config.get('General', 'Alias')
+    version = config.get('General', 'Version')
     install_dir = config.get('Directory', 'InstallDir')
     libraries = config.get('Libraries', 'Libraries')
 
@@ -24,9 +25,9 @@ def getInstallParameters():
     Install_Path_Windows = os.path.expanduser('~/' + install_dir)
     Install_Path_Linux = os.path.expanduser('~/.local/bin/' + install_dir)
 
-    return Installer_Path, Install_Path_Windows, Install_Path_Linux, name, script_name, alias, install_dir, libraries
+    return Installer_Path, Install_Path_Windows, Install_Path_Linux, name, script_name, alias, version, install_dir, libraries
 
-Installer_Path, Install_Path_Windows, Install_Path_Linux, name, script_name, alias, install_dir, libraries = getInstallParameters()
+Installer_Path, Install_Path_Windows, Install_Path_Linux, name, script_name, alias, version, install_dir, libraries = getInstallParameters()
 
 print(f"DEBUG: Installer Path: {Installer_Path}")
 print(f"DEBUG: Install Path (Windows): {Install_Path_Windows}")
@@ -34,10 +35,11 @@ print(f"DEBUG: Install Path (Linux): {Install_Path_Linux}")
 print(f"DEBUG: Name: {name}")
 print(f"DEBUG: Script Name: {script_name}")
 print(f"DEBUG: Alias: {alias}")
+print(f"DEBUG: Version: {version}")
 print(f"DEBUG: Install Directory: {install_dir}")
 print(f"DEBUG: Libraries: {libraries}")
 
-
+'''
 # Function to get the version number from a Python script
 def getVersion(script_path):
     with open(script_path) as f:
@@ -225,3 +227,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+'''
