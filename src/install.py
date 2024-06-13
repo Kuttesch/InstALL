@@ -5,6 +5,7 @@ import sys
 import re
 import ast
 import configparser
+import subprocess
 
 def getInstallParameters():
     # Create a ConfigParser object
@@ -45,24 +46,30 @@ def osCheck():
     if sys.platform == 'win32':
         return 'Windows'
         print("DEBUG: Windows OS detected.")
+        return 'python'
     elif sys.platform == 'linux':
         return 'Linux'
         print("DEBUG: Linux OS detected.")
+        return 'python3'
     else:
         return None
         print("DEBUG: Unsupported OS detected.")
 
 # Function to install the required libraries
 def libInstall():
+    # Determine the pip command
+    pip_command = 'pip3' if python_version == 'python3' else 'pip'
+
     for library in libraries:
         try:
-            result = subprocess.run([sys.executable, '-m', 'pip', 'install', '--upgrade', library], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+            result = subprocess.run([sys.executable, '-m', pip_command, 'install', '--upgrade', library], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
             if 'Requirement already satisfied' in result.stdout:
                 print(f"{library} already exists!")
             else:
                 print(f"{library} has been installed successfully!")
         except subprocess.CalledProcessError:
             print(f"Failed to install {library}!")
+
 
 def checkVersion(Install_Path):
     if os.path.exists(Install_Path):
@@ -179,13 +186,13 @@ def installLinux():
         if 'True' in alias_check.stdout:
             print("Alias already exists.")
         else:
-            command = f'echo "alias {alias}=\'python {Install_Path_Linux}\'" >> ~/.bashrc'
+            command = f'echo "alias {alias}=\'python3 {Install_Path_Linux}\'" >> ~/.bashrc'
             subprocess.run(['bash', '-c', command], check=True)
     else:
         user_input = input("A bash profile does not exist. Do you want to create one? (y/n): ")
         if user_input.lower() == 'y':
             subprocess.run(['touch', '~/.bashrc'], check=True)
-            command = f'echo "alias {alias}=\'python {Install_Path_Linux}\'" >> ~/.bashrc'
+            command = f'echo "alias {alias}=\'python3 {Install_Path_Linux}\'" >> ~/.bashrc'
             subprocess.run(['bash', '-c', command], check=True)
             print("Profile created and alias added.")
         else:
@@ -199,7 +206,7 @@ def installLinux():
     successMessage()
 
 def main():
-    os_type = osCheck()
+    os_type, python_version = osCheck()
     if os_type == 'Windows':
         VersionStatus = checkVersion(Install_Path_Windows)
         switchInstall(VersionStatus, 'Windows')
@@ -213,4 +220,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-'''
