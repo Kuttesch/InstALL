@@ -39,20 +39,6 @@ print(f"DEBUG: Version: {version}")
 print(f"DEBUG: Install Directory: {install_dir}")
 print(f"DEBUG: Libraries: {libraries}")
 
-'''
-# Function to get the version number from a Python script
-def getVersion(script_path):
-    with open(script_path) as f:
-        source_code = f.read()
-    module = ast.parse(source_code)
-    version_assignments = [node for node in module.body if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name) and node.targets[0].id == '__version__']
-    if version_assignments:
-        version_number = version_assignments[0].value.s
-        print(f"DEBUG: Version number of {script_path} is {version_number}.")
-        return version_number
-    else:
-        return None
-        print(f"DEBUG: Version number of {script_path} not found.")
 
 # Function to check the OS
 def osCheck():
