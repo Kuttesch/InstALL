@@ -45,6 +45,7 @@ To utilize InstALL for your project, follow the steps below:
     ```
 
     The script will install the project and its dependencies to `C:\Users\%username%\Documents\%InstallDir%` on Windows and `/home/%username%/Documents/%InstallDir%` on Linux.
+    It will also add a `config.ini` to the install direction, containing the installed version. You may use this config file for your projects configurations too.
 
 **Important Note**: The versioning format is consistent. If you wish to modify the versioning format, you will need to alter the `install.py` script.
 
