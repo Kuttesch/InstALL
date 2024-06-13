@@ -18,7 +18,7 @@ def getInstallParameters():
     name = config.get('General', 'Name')
     script_name = config.get('General', 'ScriptName')
     alias = config.get('General', 'Alias')
-    version = config.get('General', 'Version')
+    new_version = config.get('General', 'Version')
     install_dir = config.get('Directory', 'InstallDir')
     libraries = config.get('Libraries', 'Libraries')
 
@@ -26,9 +26,9 @@ def getInstallParameters():
     Install_Path_Windows = os.path.expanduser('~/' + install_dir)
     Install_Path_Linux = os.path.expanduser('~/.local/bin/' + install_dir)
 
-    return Installer_Path, Install_Path_Windows, Install_Path_Linux, name, script_name, alias, version, install_dir, libraries
+    return Installer_Path, Install_Path_Windows, Install_Path_Linux, name, script_name, alias, new_version, install_dir, libraries
 
-Installer_Path, Install_Path_Windows, Install_Path_Linux, name, script_name, alias, version, install_dir, libraries = getInstallParameters()
+Installer_Path, Install_Path_Windows, Install_Path_Linux, name, script_name, alias, new_version, install_dir, libraries = getInstallParameters()
 
 print(f"DEBUG: Installer Path: {Installer_Path}")
 print(f"DEBUG: Install Path (Windows): {Install_Path_Windows}")
@@ -40,6 +40,14 @@ print(f"DEBUG: Version: {version}")
 print(f"DEBUG: Install Directory: {install_dir}")
 print(f"DEBUG: Libraries: {libraries}")
 
+def getVersion(file_path):
+    config = configparser.ConfigParser()
+    config.read(file_path)
+    try:
+        current_version = config.get('General', 'Version')
+    except:
+        current_version = None
+    return current_version
 
 # Function to check the OS
 def osCheck():
@@ -73,15 +81,14 @@ def libInstall():
 
 def checkVersion(Install_Path):
     if os.path.exists(Install_Path):
-        Installer_Version = getVersion(Installer_Path)
-        Existing_Version = getVersion(Install_Path + '/SysInfo.py')
+        current_version = getVersion(Install_Path + '/config.ini')
 
         # Compare the version numbers
-        if Existing_Version == None or Installer_Version == None or Installer_Version > Existing_Version:
+        if current_version == None or new_version == None or new_version > current_version:
             # Newer version
             return 1
                 
-        elif Installer_Version < Existing_Version:
+        elif new_version < current_version:
             # Older version
             return 2
         else:
@@ -167,6 +174,15 @@ def installWindows():
 
     # Copy the SystemInfo.py script to the folder
     shutil.copy(Installer_Path, Install_Path_Windows)
+    # Change the version number in the config file
+    try:
+        config = configparser.ConfigParser()
+        config.read(Install_Path_Windows + '/config.ini')
+        config['General'] = {'Version': new_version}
+        with open(Install_Path_Windows + '/config.ini', 'w') as configfile:
+            config.write(configfile)
+    except:
+        print("Failed to write to config.ini file.")
 
     successMessage()
 
@@ -202,6 +218,15 @@ def installLinux():
 
     # Copy the SystemInfo.py script to the folder
     shutil.copy(Installer_Path, Install_Path_Linux)
+    # Change the version number in the config file
+    try:
+        config = configparser.ConfigParser()
+        config.read(Install_Path_Windows + '/config.ini')
+        config['General'] = {'Version': new_version}
+        with open(Install_Path_Windows + '/config.ini', 'w') as configfile:
+            config.write(configfile)
+    except:
+        print("Failed to write to config.ini file.")
 
     successMessage()
 
