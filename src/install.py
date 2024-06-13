@@ -101,28 +101,28 @@ def checkVersion(Install_Path):
 def switchInstall(VersionStatus, OSVersion):
     InstallVersion = "install" + OSVersion + "()"
     if VersionStatus == 0:
-        check = input("Do you want to install SysInfo? (y/n): ")
+        check = input("Do you want to install {name}? (y/n): ")
         if check.lower() == 'y':
             exec(InstallVersion)
         else:
             quitMessage()
     elif VersionStatus == 1:
-        print("You have a newer version of SysInfo than the one you're trying to install.")
-        check = input("Do you want to downgrade SysInfo? (y/n): ")
+        print("You have a newer version of {name} than the one you're trying to install.")
+        check = input("Do you want to downgrade {name}? (y/n): ")
         if check.lower() == 'y':
             exec(InstallVersion)
         else:
             quitMessage()
     elif VersionStatus == 2:
-        print("A newer version of SysInfo is available.")
-        check = input("Do you want to update SysInfo? (y/n): ")
+        print("A newer version of {name} is available.")
+        check = input("Do you want to update {name}? (y/n): ")
         if check.lower() == 'y':
             exec(InstallVersion)
         else:
             quitMessage()
     elif VersionStatus == 3:
-        print("You already have the latest version of SysInfo.")
-        check = input("Do you want to reinstall SysInfo? (y/n): ")
+        print("You already have the latest version of {name}.")
+        check = input("Do you want to reinstall {name}? (y/n): ")
         if check.lower() == 'y':
             exec(InstallVersion)
         else:
@@ -130,7 +130,7 @@ def switchInstall(VersionStatus, OSVersion):
 
 
 def successMessage():
-    print("Sysinfo has been installed successfully!")
+    print("{name} has been installed successfully!")
     print("Please remove the installer directory manually: " + os.path.dirname(Installer_Path))
     print("Please restart your terminal for the changes to take effect.")
 
@@ -140,7 +140,7 @@ def quitMessage():
 
 
 def installWindows():
-    print("Installing Sysinfo for Windows...")
+    print("Installing {name} for Windows...")
 
     # Create the folder
     if not os.path.exists(Install_Path_Windows):
@@ -188,7 +188,7 @@ def installWindows():
 
 def installLinux():
 
-    print("Installing Sysinfo for Linux...")
+    print("Installing {name} for Linux...")
 
     # Create the folder
     if not os.path.exists(Install_Path_Linux):
